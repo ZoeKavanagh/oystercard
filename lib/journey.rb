@@ -1,21 +1,26 @@
+require 'oystercard'
+
 class Journey
+  MINIMUM_CHARGE = 1
+  PENALTY_CHARGE = 6
 
-attr_reader :started
+attr_reader :entry_station, :exit_station
 
-  def initialize
-    @started = false
+
+  def start(station)
+    @entry_station = station.name
   end
 
-  def start
-    @started = true
+  def finish(station)
+    @exit_station = station.name
   end
 
-  def stop
-    @started = false
+  def complete?
+     !@entry_station.nil? && !@exit_station.nil?
   end
 
-  def journey_complete?
-    @started == false
+  def fare
+    complete? ? MINIMUM_CHARGE : PENALTY_CHARGE
   end
 
 end

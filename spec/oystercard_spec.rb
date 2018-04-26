@@ -2,8 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   let(:oystercard) { Oystercard.new }
-  let(:entry_station) { double :entry_station }
-  let(:exit_station) { double :exit_station}
+  let(:entry_station) { double :entry_station, name: :morden}
+  let(:exit_station) { double :exit_station, name: :aldgate}
 
   describe '#balance' do
     it 'should return the balance' do
@@ -39,7 +39,7 @@ describe Oystercard do
     end
     it 'should change in_journey? on touch_in' do
       subject.touch_in(entry_station)
-      expect(subject).to be_in_journey
+      expect(subject.in_journey?).to be true
     end
   end
 end
@@ -56,11 +56,9 @@ end
         subject.touch_in(entry_station)
       end
       it 'should store exit_station on touch_out' do
-        baker_street = "Baker Street"
-        marylebone = "Marylebone"
-        subject.touch_in(baker_street)
-        subject.touch_out(marylebone)
-        expect(subject.list_of_journeys.last[baker_street]).to eq marylebone
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+        expect(subject.list_of_journeys.last[:morden]).to eq :aldgate
       end
       it 'should change in_journey? on touch_out' do
         subject.touch_out(exit_station)
