@@ -26,18 +26,21 @@ class Oystercard
   def touch_out(exit_station)
     @journey.finish(exit_station)
     deduct(@journey.fare)
-    @list_of_journeys << { @journey.entry_station => @journey.exit_station }
-    @journey = Journey.new
+    add_journey
   end
+  
+  private
 
   def penalty_check
     if @journey.entry_station
-      deduct(journey.fare)
-      @list_of_journeys << { @journey.entry_station => nil }
+      deduct(journey.fare); add_journey
     end
   end
 
-private
+  def add_journey
+    @list_of_journeys << { @journey.entry_station => @journey.exit_station }
+    @journey = Journey.new
+  end
 
   def deduct(amount)
     "Your total balance is £#{@balance -= amount}"

@@ -34,11 +34,11 @@ describe Journey do
 
   describe '#fare' do
     it 'should return penalty fare if journey is not complete' do
-      subject.stub(:complete?) { false }
+      allow(subject).to receive(:complete?) {false}
       expect(subject.fare).to eq Journey::PENALTY_CHARGE
     end
     it 'should return the minimum charge if journey is complete' do
-      subject.stub(:complete?) { true }
+      allow(subject).to receive(:complete?) {true}
       expect(subject.fare).to eq Journey::MINIMUM_CHARGE
     end
   end
