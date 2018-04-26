@@ -31,7 +31,10 @@ class Oystercard
   end
 
   def penalty_check
-    deduct(journey.fare) if @journey.entry_station
+    if @journey.entry_station
+      deduct(journey.fare)
+      @list_of_journeys << { @journey.entry_station => nil }
+    end
   end
 
 private
