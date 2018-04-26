@@ -32,23 +32,13 @@ describe Oystercard do
     it 'should raise an error message if balance on #touch_in is less than £1' do
       expect { subject.touch_in(entry_station) }.to raise_error 'Insufficient funds for a journey'
     end
-
-  context 'changes caused by touch_in' do
-    before(:each) do
-      subject.instance_variable_set(:@balance, 20)
-    end
-    it 'should change in_journey? on touch_in' do
-      subject.touch_in(entry_station)
-      expect(subject.in_journey?).to be true
-    end
-  end
 end
   describe '#touch_out' do
-
+    let(:journey) {double(:journey, fare: Journey::MINIMUM_CHARGE)}
     it 'should deduct minimum fare upon #touch_out' do
       subject.instance_variable_set(:@balance, 20)
       subject.touch_in(entry_station)
-      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-1)
+      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-Journey::MINIMUM_CHARGE)
     end
     context 'touch out affects in_journey? method' do
       before(:each) do
@@ -59,10 +49,6 @@ end
         subject.touch_in(entry_station)
         subject.touch_out(exit_station)
         expect(subject.list_of_journeys.last[:morden]).to eq :aldgate
-      end
-      it 'should change in_journey? on touch_out' do
-        subject.touch_out(exit_station)
-        expect(subject).not_to be_in_journey
       end
     end
   end

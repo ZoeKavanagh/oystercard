@@ -1,10 +1,8 @@
-require 'oystercard'
-
 class Journey
   MINIMUM_CHARGE = 1
   PENALTY_CHARGE = 6
 
-attr_reader :entry_station, :exit_station
+attr_accessor :entry_station, :exit_station
 
 
   def start(station)
